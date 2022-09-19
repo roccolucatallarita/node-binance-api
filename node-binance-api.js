@@ -386,12 +386,29 @@ let api = function Binance( options = {} ) {
             delete opt.type;
             if ( typeof flags.listClientOrderId !== 'undefined' ) opt.listClientOrderId = flags.listClientOrderId;
             if ( typeof flags.limitClientOrderId !== 'undefined' ) opt.limitClientOrderId = flags.limitClientOrderId;
-            if ( typeof flags.stopClientOrderId !== 'undefined' ) opt.stopClientOrderId = flags.stopClientOrderId;
+            
+            /**
+             * New optional fields limitStrategyId, limitStrategyType. stopStrategyId, stopStrategyType
+             * These are the strategy metadata parameters for both legs of the OCO orders.
+             * limitStrategyType and stopStrategyType both cannot be less than 1000000     
+             */
+            if ( typeof flags.limitStrategyId !== 'undefined' ) opt.limitStrategyId = flags.limitStrategyId;
+            if ( typeof flags.limitStrategyType !== 'undefined' ) opt.limitStrategyType = flags.limitStrategyType;
+            if ( typeof flags.stopStrategyId !== 'undefined' ) opt.stopStrategyId = flags.stopStrategyId;
+            if ( typeof flags.stopStrategyType !== 'undefined' ) opt.stopStrategyType = flags.stopStrategyType;
         }
         if ( typeof flags.timeInForce !== 'undefined' ) opt.timeInForce = flags.timeInForce;
         if ( typeof flags.newOrderRespType !== 'undefined' ) opt.newOrderRespType = flags.newOrderRespType;
         if ( typeof flags.newClientOrderId !== 'undefined' ) opt.newClientOrderId = flags.newClientOrderId;
-
+       
+        /**
+         * New optional field strategyId is a parameter used to identify an order as part of a strategy.
+         * New optional field strategyType is a parameter used to identify what strategy was running.
+         * (E.g. If all the orders are part of spot grid strategy, it can be set to strategyType=1000000)
+         * Note: strategyType cannot be less than 1000000.
+         */
+        if ( typeof flags.strategyId !== 'undefined' ) opt.strategyId = flags.strategyId;
+        if ( typeof flags.strategyType !== 'undefined' ) opt.strategyType = flags.strategyType;
         /*
          * STOP_LOSS
          * STOP_LOSS_LIMIT
